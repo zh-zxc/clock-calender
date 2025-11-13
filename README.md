@@ -42,6 +42,20 @@ python3 server.py
 
 然后在浏览器中访问 `http://localhost:3000`
 
+### 使用Node.js运行：
+
+```bash
+node server.js
+```
+
+或者使用npm命令：
+
+```bash
+npm start
+```
+
+然后在浏览器中访问 `http://localhost:3000`
+
 ## 主题切换
 
 - 点击右上角的"切换到浅色模式"/"切换到深色模式"按钮切换主题
@@ -74,7 +88,7 @@ python3 server.py
 ```
 .
 ├── index.html      # 主页面文件，包含所有HTML、CSS和JavaScript代码
-├── server.py       # 本地服务器脚本（端口3000）
+├── server.py       # Python版本的本地服务器脚本（端口3000）
 ├── server.js       # Node.js版本的本地服务器脚本（端口3000）
 ├── package.json    # Node.js项目配置文件
 ├── README.md       # 项目说明文档

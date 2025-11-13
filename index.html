@@ -935,6 +935,9 @@
             
             // 每秒更新时钟
             setInterval(updateClock, 1000);
+            
+            // 初始化消费统计
+            updateExpenseStats();
         }
 
         // 更新时钟
@@ -1014,8 +1017,14 @@
                     renderCalendar();
                     renderNotes();
                     renderExpenses();
+                    updateExpenseStats(); // 更新消费统计
                 });
                 
+                // 添加双击事件，用于直接添加消费记录
+                dayEl.addEventListener('dblclick', () => {
+                    const dateKey = formatDate(new Date(year, month, i));
+                    addCalendarExpense(dateKey, dayEl);
+                });
                 domCache.calendarDays.appendChild(dayEl);
             }
             
@@ -1204,6 +1213,73 @@
             });
         }
 
+        // 添加在日历上直接记录消费的功能
+        function addCalendarExpense(dateKey, dayElement) {
+            const amount = prompt('请输入消费金额:');
+            if (amount === null) return; // 用户取消操作
+            
+            const amountValue = parseFloat(amount);
+            if (isNaN(amountValue) || amountValue <= 0) {
+                alert('请输入有效的金额');
+                return;
+            }
+            
+            const description = prompt('请输入消费描述(可选):') || '未命名消费';
+            
+            // 保存消费记录
+            if (!state.expenses[dateKey]) {
+                state.expenses[dateKey] = [];
+            }
+            
+            state.expenses[dateKey].push({
+                id: Date.now(),
+                amount: amountValue,
+                description: description,
+                timestamp: new Date().toISOString()
+            });
+            
+            localStorage.setItem('expenses', JSON.stringify(state.expenses));
+            renderExpenses();
+            renderCalendar(); // 重新渲染日历以更新标记
+            updateExpenseStats(); // 更新统计信息
+        }
+
+        // 更新消费统计
+        function updateExpenseStats() {
+            const dateKey = formatDate(state.selectedDate);
+            const year = state.selectedDate.getFullYear();
+            const month = state.selectedDate.getMonth();
+            
+            // 计算本日消费
+            let todayExpense = 0;
+            if (state.expenses[dateKey]) {
+                todayExpense = state.expenses[dateKey].reduce((sum, expense) => sum + expense.amount, 0);
+            }
+            
+            // 计算本月消费
+            let monthExpense = 0;
+            Object.keys(state.expenses).forEach(key => {
+                const expenseDate = new Date(key);
+                if (expenseDate.getFullYear() === year && expenseDate.getMonth() === month) {
+                    monthExpense += state.expenses[key].reduce((sum, expense) => sum + expense.amount, 0);
+                }
+            });
+            
+            // 计算本月有消费的天数
+            const expenseDays = Object.keys(state.expenses).filter(key => {
+                const expenseDate = new Date(key);
+                return expenseDate.getFullYear() === year && expenseDate.getMonth() === month;
+            }).length;
+            
+            // 计算平均每日消费
+            const avgExpense = expenseDays > 0 ? monthExpense / expenseDays : 0;
+            
+            // 更新UI
+            domCache.todayExpense.textContent = `¥${todayExpense.toFixed(2)}`;
+            domCache.monthExpense.textContent = `¥${monthExpense.toFixed(2)}`;
+            domCache.avgExpense.textContent = `¥${avgExpense.toFixed(2)}`;
+        }
+
         // 处理删除事件
         function handleDelete(e) {
             if (e.target.classList.contains('item-delete')) {
@@ -1211,6 +1287,7 @@
                 const id = parseInt(e.target.getAttribute('data-id'));
                 const type = e.target.getAttribute('data-type');
                 deleteItem(type, dateKey, id);
+                updateExpenseStats(); // 更新统计信息
             }
         }
 
@@ -1271,14 +1348,20 @@
                 dateExpenses,
                 expense => `
                     <div class="item">
-                        <div class="expense-amount">¥${expense.amount.toFixed(2)}</div>
-                        <div class="expense-description">${expense.description}</div>
-                        <div class="expense-date">${new Date(expense.timestamp).toLocaleString('zh-CN')}</div>
-                        <div class="item-delete" data-type="expenses" data-date="${dateKey}" data-id="${expense.id}">✕</div>
+                        <div class="expense-item">
+                            <div>
+                                <div class="expense-amount">¥${expense.amount.toFixed(2)}</div>
+                                <div class="expense-description">${expense.description}</div>
+                                <div class="expense-date">${new Date(expense.timestamp).toLocaleString('zh-CN')}</div>
+                            </div>
+                            <div class="item-delete expense-delete" data-type="expenses" data-date="${dateKey}" data-id="${expense.id}">✕</div>
+                        </div>
                     </div>
                 `,
                 '该日期暂无消费记录'
             );
+            
+            updateExpenseStats(); // 更新统计信息
         }
 
         // 格式化日期
