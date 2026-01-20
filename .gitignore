@@ -1,0 +1,17 @@
+cd /home/zxc/Desktop/web/时钟
+git checkout master
+git branch -m master main
+git push -u clock-calender main# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
