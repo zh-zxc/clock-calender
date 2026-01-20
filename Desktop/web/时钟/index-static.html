@@ -3,73 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="时钟应用 - 静态版，包含时钟、日历、记事本、消费记录功能">
-    <title>时钟 - 记事（静态版）</title>
+    <meta name="description" content="时钟应用 - 高级版">
+    <title>Chronos - 高级时钟应用</title>
     <style>
-        /* ==================== CSS变量系统 ==================== */
+        /* ==================== 全局变量 ==================== */
         :root {
-            /* 深色主题 - 霓虹渐变 */
-            --bg-dark: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-            --bg-dark-anim: linear-gradient(270deg, #0f0c29, #302b63, #24243e, #0f0c29);
+            /* 深色主题 - 高级黑 */
+            --bg-dark: #0a0a0f;
+            --bg-dark-2: #12121a;
+            --bg-dark-3: #1a1a25;
             
-            /* 浅色主题 - 柔和渐变 */
-            --bg-light: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            --bg-light-anim: linear-gradient(270deg, #f5f7fa, #e4e7f1, #c3cfe2, #f5f7fa);
+            /* 浅色主题 - 高级灰 */
+            --bg-light: #f8f9fa;
+            --bg-light-2: #e9ecef;
+            --bg-light-3: #dee2e6;
             
             /* 文字颜色 */
             --text-dark: #ffffff;
-            --text-light: #2d3748;
+            --text-dark-secondary: #a0a0b0;
+            --text-light: #1a1a1a;
+            --text-light-secondary: #6c757d;
             
-            /* 主色调 - 霓虹蓝 */
-            --primary-dark: #00d4ff;
-            --primary-light: #0099cc;
-            --primary-glow: rgba(0, 212, 255, 0.5);
+            /* 主色调 - 高级蓝 */
+            --primary: #4a9eff;
+            --primary-hover: #3a8eef;
+            --primary-glow: rgba(74, 158, 255, 0.3);
             
-            /* 强调色 - 霓虹粉 */
-            --accent-dark: #ff00ff;
-            --accent-light: #cc00cc;
-            --accent-glow: rgba(255, 0, 255, 0.5);
+            /* 强调色 - 高级紫 */
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --accent-glow: rgba(139, 92, 246, 0.3);
             
-            /* 成功色 - 霓虹绿 */
-            --success-dark: #00ff88;
-            --success-light: #00cc66;
-            --success-glow: rgba(0, 255, 136, 0.5);
+            /* 成功色 - 高级绿 */
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.3);
             
-            /* 警告色 - 霓虹黄 */
-            --warning-dark: #ffdd00;
-            --warning-light: #ccbb00;
-            --warning-glow: rgba(255, 221, 0, 0.5);
+            /* 警告色 - 高级黄 */
+            --warning: #f59e0b;
+            --warning-glow: rgba(245, 158, 11, 0.3);
             
-            /* 危险色 - 霓虹红 */
-            --danger-dark: #ff3366;
-            --danger-light: #cc2952;
-            --danger-glow: rgba(255, 51, 102, 0.5);
-            
-            /* 卡片背景 - 玻璃拟态 */
-            --card-dark: rgba(255, 255, 255, 0.05);
-            --card-light: rgba(255, 255, 255, 0.7);
+            /* 危险色 - 高级红 */
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.3);
             
             /* 边框 */
-            --border-dark: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.08);
             --border-light: rgba(0, 0, 0, 0.05);
             
             /* 阴影 */
-            --shadow-dark: rgba(0, 0, 0, 0.3);
-            --shadow-light: rgba(0, 0, 0, 0.1);
-            
-            /* 玻璃拟态 */
-            --glass-dark: rgba(15, 12, 41, 0.7);
-            --glass-light: rgba(255, 255, 255, 0.7);
-            
-            /* 动画时长 */
-            --anim-fast: 0.2s;
-            --anim-normal: 0.3s;
-            --anim-slow: 0.5s;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 0 20px rgba(74, 158, 255, 0.2);
             
             /* 圆角 */
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
             --radius-xl: 20px;
             
             /* 间距 */
@@ -77,9 +67,13 @@
             --space-sm: 8px;
             --space-md: 12px;
             --space-lg: 16px;
-            --space-xl: 20px;
+            --space-xl: 24px;
             --space-2xl: 32px;
             --space-3xl: 48px;
+            
+            /* 动画 */
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ==================== 基础重置 ==================== */
@@ -99,9 +93,15 @@
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
+            transition: background 0.3s var(--ease-smooth);
         }
 
-        /* 背景动画 - 优化版本 */
+        body.light {
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        /* 高级背景 - 微妙的网格 */
         body::before {
             content: '';
             position: fixed;
@@ -109,31 +109,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-dark-anim);
-            background-size: 200% 200%;
-            animation: gradientShift 30s ease infinite;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
             z-index: -1;
-            opacity: 0.2;
-        }
-
-        body.light {
-            background: var(--bg-light);
+            pointer-events: none;
         }
 
         body.light::before {
-            background: var(--bg-light-anim);
-        }
-
-        /* 减少动画模式 - 禁用背景动画 */
-        @media (prefers-reduced-motion: reduce) {
-            body::before {
-                animation: none;
-            }
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
         }
 
         /* ==================== 容器布局 ==================== */
@@ -151,12 +138,11 @@
             align-items: center;
             margin-bottom: var(--space-2xl);
             padding: var(--space-lg) var(--space-xl);
-            background: var(--glass-dark);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--border-dark);
-            border-radius: var(--radius-xl);
-            box-shadow: 0 8px 32px var(--shadow-dark);
-            animation: slideDown 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+            background: var(--bg-dark-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s var(--ease-smooth);
             position: relative;
             overflow: hidden;
         }
@@ -165,32 +151,35 @@
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
-            animation: shimmer 3s infinite;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
         }
 
         body.light .header {
-            background: var(--glass-light);
+            background: var(--bg-light-2);
             border-color: var(--border-light);
-            box-shadow: 0 8px 32px var(--shadow-light);
+        }
+
+        .header:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
         }
 
         .header-title {
-            font-weight: 800;
-            font-size: 1.5rem;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             gap: var(--space-sm);
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 20px var(--primary-glow);
         }
 
         .header-title span:first-child {
-            font-size: 1.8rem;
-            filter: drop-shadow(0 0 10px var(--primary-glow));
+            font-size: 1.6rem;
         }
 
         .header-actions {
@@ -204,42 +193,82 @@
             border: none;
             border-radius: var(--radius-md);
             cursor: pointer;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 0.9rem;
-            letter-spacing: 0.5px;
-            transition: all var(--anim-normal) cubic-bezier(0.22, 0.61, 0.36, 1);
+            letter-spacing: 0.3px;
+            transition: all 0.2s var(--ease-smooth);
             position: relative;
             overflow: hidden;
             display: inline-flex;
             align-items: center;
             gap: var(--space-xs);
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background: var(--bg-dark-3);
+            color: var(--text-dark);
+            border: 1px solid var(--border);
         }
 
-        /* 按钮光效 */
+        body.light .btn {
+            background: var(--bg-light-3);
+            color: var(--text-light);
+            border-color: var(--border-light);
+        }
+
         .btn::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left var(--anim-slow) ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s var(--ease-out);
         }
 
         .btn:hover::before {
-            left: 100%;
+            transform: translateX(100%);
         }
 
         .btn:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
         }
 
         .btn:active {
-            transform: translateY(0) scale(0.98);
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 16px var(--primary-glow);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: white;
+            border: none;
+        }
+
+        .btn-accent:hover {
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            border: none;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+            border: none;
         }
 
         .btn:disabled {
@@ -249,115 +278,73 @@
             box-shadow: none;
         }
 
-        /* 按钮变体 */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
-            color: white;
-            text-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success-dark), var(--success-light));
-            color: white;
-            text-shadow: 0 0 10px var(--success-glow);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning-dark), var(--warning-light));
-            color: #333;
-            text-shadow: 0 0 10px var(--warning-glow);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger-dark), var(--danger-light));
-            color: white;
-            text-shadow: 0 0 10px var(--danger-glow);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        body.light .btn-secondary {
-            background: rgba(0, 0, 0, 0.05);
-            color: var(--text-light);
-            border-color: rgba(0, 0, 0, 0.1);
-        }
-
         /* ==================== 时钟区域 ==================== */
         .clock-section {
             text-align: center;
             padding: var(--space-3xl) var(--space-2xl);
-            background: var(--glass-dark);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--border-dark);
+            background: var(--bg-dark-2);
+            border: 1px solid var(--border);
             border-radius: var(--radius-xl);
             margin-bottom: var(--space-2xl);
-            box-shadow: 0 8px 32px var(--shadow-dark);
-            animation: fadeInUp 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+            box-shadow: var(--shadow-lg);
             position: relative;
             overflow: hidden;
+            transition: all 0.3s var(--ease-smooth);
         }
 
         body.light .clock-section {
-            background: var(--glass-light);
+            background: var(--bg-light-2);
             border-color: var(--border-light);
-            box-shadow: 0 8px 32px var(--shadow-light);
         }
 
-        /* 扫描线效果 */
         .clock-section::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary-dark), var(--accent-dark), transparent);
-            animation: scan 3s linear infinite;
-            opacity: 0.8;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, var(--primary-glow) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s var(--ease-smooth);
+            pointer-events: none;
         }
 
-        /* 霓虹时钟 */
+        .clock-section:hover::before {
+            opacity: 0.3;
+        }
+
         .clock {
             font-size: 5rem;
-            font-weight: 900;
-            font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, var(--primary-dark), var(--accent-dark), var(--primary-dark));
-            background-size: 200% 200%;
+            font-weight: 300;
+            font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+            letter-spacing: 4px;
+            margin-bottom: var(--space-lg);
+            background: linear-gradient(135deg, var(--text-dark) 0%, var(--primary) 50%, var(--accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: var(--space-lg);
-            letter-spacing: 4px;
-            text-shadow: 0 0 40px var(--primary-glow);
-            animation: neonPulse 3s ease-in-out infinite, gradientShift 5s ease infinite;
+            background-size: 200% 200%;
+            animation: gradientMove 8s ease-in-out infinite;
             position: relative;
             display: inline-block;
         }
 
-        .clock::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 120%;
-            height: 120%;
-            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-            filter: blur(20px);
-            z-index: -1;
-            animation: glowPulse 2s ease-in-out infinite;
+        body.light .clock {
+            background: linear-gradient(135deg, var(--text-light) 0%, var(--primary) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .date-display {
-            font-size: 1.5rem;
-            font-weight: 600;
-            opacity: 0.95;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-dark-secondary);
             letter-spacing: 1px;
-            text-shadow: 0 2px 10px var(--shadow-dark);
-            animation: fadeIn 1s ease 0.5s both;
+            opacity: 0.9;
+        }
+
+        body.light .date-display {
+            color: var(--text-light-secondary);
         }
 
         /* ==================== 主网格布局 ==================== */
@@ -376,34 +363,28 @@
 
         /* ==================== 卡片通用样式 ==================== */
         .card {
-            background: var(--glass-dark);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--border-dark);
+            background: var(--bg-dark-2);
+            border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: var(--space-xl);
-            box-shadow: 0 8px 32px var(--shadow-dark);
-            transition: all var(--anim-normal) cubic-bezier(0.22, 0.61, 0.36, 1);
-            animation: fadeInUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s var(--ease-smooth);
             position: relative;
             overflow: hidden;
         }
 
         body.light .card {
-            background: var(--glass-light);
+            background: var(--bg-light-2);
             border-color: var(--border-light);
-            box-shadow: 0 8px 32px var(--shadow-light);
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
         }
 
         /* ==================== 日历样式 ==================== */
-        .calendar {
-            animation-delay: 0.1s;
-        }
-
         .calendar-header {
             display: flex;
             justify-content: space-between;
@@ -412,16 +393,10 @@
         }
 
         .calendar-title {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px var(--primary-glow);
-            user-select: none;
-        }
-
-        body.light .calendar-title {
-            color: var(--primary-light);
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--primary);
         }
 
         .calendar-nav {
@@ -431,29 +406,26 @@
 
         .calendar-nav button {
             padding: var(--space-xs) var(--space-md);
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
-            border: none;
+            background: var(--bg-dark-3);
+            border: 1px solid var(--border);
             border-radius: var(--radius-sm);
-            color: white;
+            color: var(--text-dark);
             cursor: pointer;
-            font-weight: 700;
-            transition: all var(--anim-normal) ease;
-            box-shadow: 0 4px 15px var(--primary-glow);
-            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s var(--ease-smooth);
         }
 
         body.light .calendar-nav button {
-            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
-            box-shadow: 0 4px 15px rgba(0, 153, 204, 0.3);
+            background: var(--bg-light-3);
+            color: var(--text-light);
+            border-color: var(--border-light);
         }
 
         .calendar-nav button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px var(--primary-glow);
-        }
-
-        .calendar-nav button:active {
-            transform: scale(0.95);
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.05);
         }
 
         .calendar-grid {
@@ -464,14 +436,17 @@
 
         .day-header {
             text-align: center;
-            font-weight: 800;
+            font-weight: 600;
             font-size: 0.75rem;
             padding: var(--space-sm) 0;
-            color: var(--primary-dark);
+            color: var(--text-dark-secondary);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            user-select: none;
-            opacity: 0.8;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+        }
+
+        body.light .day-header {
+            color: var(--text-light-secondary);
         }
 
         .day {
@@ -481,18 +456,17 @@
             justify-content: center;
             border-radius: var(--radius-sm);
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.05);
-            transition: all var(--anim-normal) cubic-bezier(0.22, 0.61, 0.36, 1);
-            position: relative;
+            background: var(--bg-dark-3);
+            transition: all 0.2s var(--ease-smooth);
             border: 1px solid transparent;
-            user-select: none;
+            position: relative;
             overflow: hidden;
         }
 
         body.light .day {
-            background: rgba(0, 0, 0, 0.03);
+            background: var(--bg-light-3);
         }
 
         .day::before {
@@ -502,92 +476,71 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            background: var(--primary);
             opacity: 0;
-            transition: opacity var(--anim-normal) ease;
+            transition: opacity 0.2s var(--ease-smooth);
+            z-index: 0;
+        }
+
+        .day > * {
+            position: relative;
+            z-index: 1;
         }
 
         .day:hover {
-            background: rgba(0, 212, 255, 0.2);
-            transform: scale(1.08);
-            border-color: var(--primary-dark);
-            box-shadow: 0 4px 15px var(--primary-glow);
+            border-color: var(--primary);
+            transform: scale(1.05);
         }
 
         .day:hover::before {
-            opacity: 0.3;
+            opacity: 0.1;
         }
 
         .day.today {
-            background: linear-gradient(135deg, var(--accent-dark), var(--accent-light));
+            background: var(--primary);
             color: white;
-            font-weight: 800;
-            box-shadow: 0 4px 15px var(--accent-glow);
-            animation: pulse 2s ease-in-out infinite;
+            font-weight: 600;
+            box-shadow: 0 0 10px var(--primary-glow);
         }
 
         .day.selected {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+            background: var(--accent);
             color: white;
-            font-weight: 800;
-            box-shadow: 0 4px 15px var(--primary-glow);
+            font-weight: 600;
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         .day.has-data::after {
-            content: "•";
+            content: '';
             position: absolute;
-            bottom: 2px;
-            right: 4px;
-            color: var(--accent-dark);
-            font-size: 1.2rem;
-            font-weight: 900;
-            text-shadow: 0 0 5px var(--accent-glow);
-            animation: blink 2s ease-in-out infinite;
+            bottom: 3px;
+            right: 3px;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.8;
         }
 
         .day.other-month {
-            opacity: 0.25;
-            background: rgba(255, 255, 255, 0.02);
+            opacity: 0.3;
             cursor: not-allowed;
         }
 
         /* ==================== 数据区域样式 ==================== */
-        .data-section {
-            animation-delay: 0.2s;
-            max-height: 600px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary-dark) transparent;
-        }
-
-        .data-section::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .data-section::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .data-section::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, var(--primary-dark), var(--accent-dark));
-            border-radius: 3px;
-        }
-
         .section-title {
-            font-size: 1.2rem;
-            font-weight: 800;
+            font-size: 1.1rem;
+            font-weight: 600;
             margin-bottom: var(--space-lg);
-            color: var(--primary-dark);
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            color: var(--text-dark);
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             gap: var(--space-sm);
-            text-shadow: 0 0 10px var(--primary-glow);
         }
 
         body.light .section-title {
-            color: var(--primary-light);
+            color: var(--text-light);
         }
 
         .input-group {
@@ -598,34 +551,32 @@
             display: block;
             margin-bottom: var(--space-xs);
             font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            color: var(--text-dark-secondary);
             opacity: 0.9;
-            color: var(--text-dark);
         }
 
         body.light .input-group label {
-            color: var(--text-light);
+            color: var(--text-light-secondary);
         }
 
         .input-group input,
         .input-group textarea {
             width: 100%;
             padding: var(--space-md);
-            border: 1px solid var(--border-dark);
+            background: var(--bg-dark-3);
+            border: 1px solid var(--border);
             border-radius: var(--radius-md);
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
+            color: var(--text-dark);
             font-family: inherit;
             font-size: 1rem;
-            transition: all var(--anim-normal) ease;
-            backdrop-filter: blur(10px);
+            transition: all 0.2s var(--ease-smooth);
         }
 
         body.light .input-group input,
         body.light .input-group textarea {
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--bg-light-3);
             color: var(--text-light);
             border-color: var(--border-light);
         }
@@ -633,16 +584,9 @@
         .input-group input:focus,
         .input-group textarea:focus {
             outline: none;
-            border-color: var(--primary-dark);
-            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--primary);
             box-shadow: 0 0 0 3px var(--primary-glow);
             transform: translateY(-1px);
-        }
-
-        body.light .input-group input:focus,
-        body.light .input-group textarea:focus {
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.2);
         }
 
         .expense-inputs {
@@ -662,10 +606,10 @@
             margin-top: var(--space-lg);
             max-height: 250px;
             overflow-y: auto;
-            border-top: 1px solid var(--border-dark);
+            border-top: 1px solid var(--border);
             padding-top: var(--space-lg);
             scrollbar-width: thin;
-            scrollbar-color: var(--primary-dark) transparent;
+            scrollbar-color: var(--primary) transparent;
         }
 
         .items-list::-webkit-scrollbar {
@@ -673,25 +617,24 @@
         }
 
         .items-list::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, var(--primary-dark), var(--accent-dark));
+            background: var(--primary);
             border-radius: 2px;
         }
 
         .item {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(255, 0, 255, 0.15));
+            background: var(--bg-dark-3);
             border-radius: var(--radius-md);
             padding: var(--space-md);
             margin-bottom: var(--space-md);
-            animation: slideIn 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            transition: all var(--anim-normal) ease;
+            border: 1px solid var(--border);
+            transition: all 0.2s var(--ease-smooth);
             position: relative;
             overflow: hidden;
         }
 
         body.light .item {
-            background: linear-gradient(135deg, rgba(0, 153, 204, 0.1), rgba(204, 0, 204, 0.1));
-            border-color: rgba(0, 153, 204, 0.15);
+            background: var(--bg-light-3);
+            border-color: var(--border-light);
         }
 
         .item::before {
@@ -699,18 +642,17 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 3px;
             height: 100%;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 212, 255, 0.2), transparent 50%);
+            background: var(--primary);
             opacity: 0;
-            transition: opacity var(--anim-normal) ease;
-            pointer-events: none;
+            transition: opacity 0.2s var(--ease-smooth);
         }
 
         .item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.2);
-            border-color: var(--primary-dark);
+            transform: translateX(4px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
         }
 
         .item:hover::before {
@@ -726,57 +668,62 @@
 
         .item-date {
             font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--primary-dark);
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 0.3px;
             opacity: 0.9;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
         }
 
         .item-delete {
-            background: linear-gradient(135deg, var(--danger-dark), var(--danger-light));
+            background: transparent;
             border: none;
-            color: white;
+            color: var(--danger);
             width: 24px;
             height: 24px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 900;
-            transition: all var(--anim-normal) ease;
-            box-shadow: 0 2px 8px var(--danger-glow);
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.2s var(--ease-smooth);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            overflow: hidden;
         }
 
         .item-delete::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left var(--anim-normal) ease;
+            background: var(--danger);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s var(--ease-smooth);
+            z-index: -1;
         }
 
         .item-delete:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 4px 15px var(--danger-glow);
+            color: white;
+            transform: scale(1.1);
         }
 
         .item-delete:hover::before {
-            left: 100%;
+            opacity: 1;
         }
 
         .item-content {
             font-size: 0.95rem;
             line-height: 1.6;
-            font-weight: 500;
+            font-weight: 400;
             word-wrap: break-word;
+            color: var(--text-dark-secondary);
+        }
+
+        body.light .item-content {
+            color: var(--text-light-secondary);
         }
 
         .expense-item {
@@ -786,11 +733,10 @@
         }
 
         .expense-amount {
-            font-weight: 900;
-            color: var(--accent-dark);
-            font-size: 1.3rem;
-            text-shadow: 0 0 10px var(--accent-glow);
-            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-family: 'SF Mono', 'Fira Code', monospace;
         }
 
         .stats-bar {
@@ -799,105 +745,87 @@
             gap: var(--space-md);
             margin-top: var(--space-lg);
             padding: var(--space-lg);
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-dark-3);
             border-radius: var(--radius-md);
-            border: 1px solid var(--border-dark);
+            border: 1px solid var(--border);
         }
 
         body.light .stats-bar {
-            background: rgba(0, 0, 0, 0.03);
+            background: var(--bg-light-3);
             border-color: var(--border-light);
         }
 
         .stat-item {
             text-align: center;
             padding: var(--space-md);
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--bg-dark-2);
             border-radius: var(--radius-sm);
-            transition: transform var(--anim-normal) ease;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s var(--ease-smooth);
+            border: 1px solid var(--border);
         }
 
         body.light .stat-item {
-            background: rgba(0, 0, 0, 0.02);
-        }
-
-        .stat-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity var(--anim-normal) ease;
+            background: var(--bg-light-2);
+            border-color: var(--border-light);
         }
 
         .stat-item:hover {
             transform: translateY(-2px);
-        }
-
-        .stat-item:hover::before {
-            opacity: 0.3;
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
         }
 
         .stat-label {
             font-size: 0.7rem;
-            opacity: 0.8;
+            opacity: 0.7;
             margin-bottom: var(--space-xs);
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
             text-transform: uppercase;
         }
 
         .stat-value {
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: var(--primary-dark);
-            text-shadow: 0 0 10px var(--primary-glow);
-            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'SF Mono', 'Fira Code', monospace;
         }
 
         body.light .stat-value {
-            color: var(--primary-light);
-            text-shadow: 0 0 10px rgba(0, 153, 204, 0.2);
+            color: var(--primary);
         }
 
         /* ==================== 空状态 ==================== */
         .empty-state {
             text-align: center;
             padding: var(--space-2xl) var(--space-xl);
-            color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-dark-secondary);
+            background: var(--bg-dark-3);
             border-radius: var(--radius-md);
-            border: 2px dashed rgba(255, 255, 255, 0.1);
-            animation: slideIn 0.3s ease;
+            border: 1px dashed var(--border);
+            opacity: 0.7;
         }
 
         body.light .empty-state {
-            background: rgba(0, 0, 0, 0.02);
-            border-color: rgba(0, 0, 0, 0.05);
-            color: rgba(0, 0, 0, 0.5);
+            background: var(--bg-light-3);
+            color: var(--text-light-secondary);
+            border-color: var(--border-light);
         }
 
         .empty-state-icon {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: var(--space-md);
             opacity: 0.5;
-            animation: bounce 2s ease-in-out infinite;
         }
 
         .empty-state-text {
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
 
         /* ==================== 游戏区域 ==================== */
         .game-section {
-            animation-delay: 0.3s;
             margin-bottom: var(--space-2xl);
         }
 
@@ -950,27 +878,29 @@
             min-width: 120px;
             padding: var(--space-md);
             font-size: 0.9rem;
+            font-weight: 600;
         }
 
         .game-tabs .btn.btn-primary {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
-            box-shadow: 0 4px 15px var(--primary-glow);
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            border: none;
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
         .game-tabs .btn.btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--bg-dark-3);
+            border: 1px solid var(--border);
         }
 
         body.light .game-tabs .btn.btn-secondary {
-            background: rgba(0, 0, 0, 0.05);
-            border-color: rgba(0, 0, 0, 0.1);
+            background: var(--bg-light-3);
+            border-color: var(--border-light);
         }
 
         .game-tabs .btn.active {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--primary-glow);
-            border: 2px solid var(--primary-dark);
+            box-shadow: 0 6px 16px var(--primary-glow);
+            border: 2px solid var(--primary);
         }
 
         /* 游戏消息 */
@@ -978,36 +908,38 @@
             text-align: center;
             padding: var(--space-lg);
             border-radius: var(--radius-md);
-            font-weight: 700;
-            font-size: 1.1rem;
+            font-weight: 600;
+            font-size: 1rem;
             min-height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all var(--anim-normal) ease;
-            backdrop-filter: blur(10px);
+            transition: all 0.2s var(--ease-smooth);
+            border: 1px solid var(--border);
+            background: var(--bg-dark-3);
+        }
+
+        body.light .game-message {
+            background: var(--bg-light-3);
+            border-color: var(--border-light);
         }
 
         .game-message.success {
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 204, 102, 0.2));
-            border: 2px solid var(--success-dark);
-            color: var(--success-dark);
-            animation: slideIn 0.5s ease;
-            text-shadow: 0 0 10px var(--success-glow);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border-color: var(--success);
+            color: var(--success);
         }
 
         .game-message.info {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 153, 204, 0.2));
-            border: 2px solid var(--primary-dark);
-            color: var(--primary-dark);
-            text-shadow: 0 0 10px var(--primary-glow);
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(58, 142, 239, 0.1));
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
         .game-message.warning {
-            background: linear-gradient(135deg, rgba(255, 221, 0, 0.2), rgba(204, 187, 0, 0.2));
-            border: 2px solid var(--warning-dark);
-            color: var(--warning-dark);
-            text-shadow: 0 0 10px var(--warning-glow);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+            border-color: var(--warning);
+            color: var(--warning);
         }
 
         /* ==================== 游戏板通用样式 ==================== */
@@ -1017,10 +949,15 @@
             max-width: 400px;
             margin: 0 auto;
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-dark-3);
             border-radius: var(--radius-md);
             padding: var(--space-sm);
-            border: 1px solid var(--border-dark);
+            border: 1px solid var(--border);
+        }
+
+        body.light .game-board {
+            background: var(--bg-light-3);
+            border-color: var(--border-light);
         }
 
         /* ==================== 记忆翻牌游戏 ==================== */
@@ -1030,64 +967,45 @@
 
         .game-card {
             aspect-ratio: 1;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 255, 0.2));
-            border: 2px solid rgba(0, 212, 255, 0.3);
+            background: var(--bg-dark-2);
+            border: 1px solid var(--border);
             border-radius: var(--radius-md);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.8rem;
-            font-weight: 900;
+            font-weight: 700;
             color: transparent;
-            transition: all var(--anim-normal) cubic-bezier(0.22, 0.61, 0.36, 1);
+            transition: all 0.2s var(--ease-smooth);
             user-select: none;
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(5px);
         }
 
         body.light .game-card {
-            background: linear-gradient(135deg, rgba(0, 153, 204, 0.15), rgba(204, 0, 204, 0.15));
-            border-color: rgba(0, 153, 204, 0.25);
-        }
-
-        .game-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity var(--anim-normal) ease;
+            background: var(--bg-light-2);
+            border-color: var(--border-light);
         }
 
         .game-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 15px var(--primary-glow);
-            border-color: var(--primary-dark);
-        }
-
-        .game-card:hover::before {
-            opacity: 0.3;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
         .game-card.flipped {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             color: white;
-            border-color: var(--primary-dark);
+            border-color: var(--primary);
             transform: scale(1.02);
-            text-shadow: 0 0 15px var(--primary-glow);
         }
 
         .game-card.matched {
-            background: linear-gradient(135deg, var(--success-dark), var(--success-light));
-            border-color: var(--success-dark);
+            background: linear-gradient(135deg, var(--success), #059669);
+            border-color: var(--success);
             cursor: default;
-            opacity: 0.8;
-            text-shadow: 0 0 15px var(--success-glow);
+            opacity: 0.9;
         }
 
         .game-card.matched:hover {
@@ -1096,10 +1014,9 @@
         }
 
         .game-card.wrong {
-            background: linear-gradient(135deg, var(--danger-dark), var(--danger-light));
-            border-color: var(--danger-dark);
-            animation: shake 0.5s ease;
-            text-shadow: 0 0 15px var(--danger-glow);
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            border-color: var(--danger);
+            animation: shake 0.4s var(--ease-smooth);
         }
 
         /* ==================== 贪吃蛇游戏 ==================== */
@@ -1110,38 +1027,34 @@
 
         .snake-cell {
             aspect-ratio: 1;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-dark-2);
             border-radius: 2px;
-            transition: all 0.1s ease;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.1s var(--ease-smooth);
+        }
+
+        body.light .snake-cell {
+            background: var(--bg-light-2);
         }
 
         .snake-cell.snake {
-            background: linear-gradient(135deg, var(--success-dark), var(--success-light));
-            border-radius: 3px;
-            box-shadow: 0 0 8px var(--success-glow);
-            animation: pulse 1s ease-in-out infinite;
+            background: linear-gradient(135deg, var(--success), #059669);
+            border-radius: 2px;
         }
 
         .snake-cell.snake-head {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
-            border-radius: 4px;
-            box-shadow: 0 0 12px var(--primary-glow);
-            animation: neonPulse 1.5s ease-in-out infinite;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            border-radius: 3px;
         }
 
         .snake-cell.food {
-            background: linear-gradient(135deg, var(--accent-dark), var(--accent-light));
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
             border-radius: 50%;
-            animation: pulse 0.5s ease-in-out infinite alternate;
-            box-shadow: 0 0 12px var(--accent-glow);
+            animation: pulse 1s var(--ease-smooth) infinite;
         }
 
         .snake-cell.wall {
-            background: linear-gradient(135deg, var(--danger-dark), var(--danger-light));
+            background: var(--danger);
             border-radius: 2px;
-            box-shadow: 0 0 8px var(--danger-glow);
         }
 
         /* ==================== 推箱子游戏 ==================== */
@@ -1152,54 +1065,53 @@
 
         .sokoban-cell {
             aspect-ratio: 1;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-dark-2);
             border-radius: 2px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            font-weight: bold;
-            transition: all 0.1s ease;
-            position: relative;
-            overflow: hidden;
+            font-weight: 700;
+            transition: all 0.1s var(--ease-smooth);
+        }
+
+        body.light .sokoban-cell {
+            background: var(--bg-light-2);
         }
 
         .sokoban-cell.wall {
-            background: linear-gradient(135deg, var(--danger-dark), var(--danger-light));
+            background: var(--danger);
             border-radius: 2px;
-            box-shadow: 0 0 8px var(--danger-glow);
         }
 
         .sokoban-cell.floor {
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--bg-dark-3);
+        }
+
+        body.light .sokoban-cell.floor {
+            background: var(--bg-light-3);
         }
 
         .sokoban-cell.target {
-            background: radial-gradient(circle, var(--warning-dark) 30%, transparent 70%);
+            background: var(--warning);
             border-radius: 50%;
             opacity: 0.6;
-            animation: pulse 2s ease-in-out infinite;
         }
 
         .sokoban-cell.box {
-            background: linear-gradient(135deg, var(--success-dark), var(--success-light));
-            border-radius: 4px;
-            box-shadow: 0 0 8px var(--success-glow);
-            animation: pulse 2s ease-in-out infinite;
+            background: var(--success);
+            border-radius: 3px;
         }
 
         .sokoban-cell.box-on-target {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
-            border-radius: 4px;
-            box-shadow: 0 0 12px var(--primary-glow);
-            animation: neonPulse 1.5s ease-in-out infinite;
+            background: var(--primary);
+            border-radius: 3px;
         }
 
         .sokoban-cell.player {
-            background: radial-gradient(circle, var(--accent-dark) 40%, transparent 70%);
+            background: var(--accent);
             border-radius: 50%;
-            box-shadow: 0 0 12px var(--accent-glow);
-            animation: pulse 0.8s ease-in-out infinite;
+            animation: pulse 1s var(--ease-smooth) infinite;
         }
 
         /* ==================== 响应式设计 ==================== */
@@ -1213,7 +1125,7 @@
             }
 
             .date-display {
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
 
             .header {
@@ -1295,92 +1207,25 @@
         }
 
         /* ==================== 动画系统 ==================== */
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes scan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
         @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
-        @keyframes neonPulse {
-            0%, 100% {
-                filter: brightness(1) drop-shadow(0 0 10px var(--primary-glow));
-            }
-            50% {
-                filter: brightness(1.3) drop-shadow(0 0 20px var(--primary-glow));
-            }
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
         }
 
         /* ==================== 高对比度模式支持 ==================== */
@@ -1414,8 +1259,7 @@
             .input-group,
             .btn,
             .stats-bar,
-            .game-section,
-            body::before {
+            .game-section {
                 display: none !important;
             }
 
@@ -1444,11 +1288,11 @@
         <!-- 顶部导航 -->
         <header class="header" role="banner">
             <div class="header-title">
-                <span aria-hidden="true">⏰</span>
-                <span>时钟应用（静态版）</span>
+                <span aria-hidden="true">⏱️</span>
+                <span>Chronos</span>
             </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" id="themeToggle" aria-label="切换主题">
+                <button class="btn" id="themeToggle" aria-label="切换主题">
                     <span aria-hidden="true">🌓</span> 主题
                 </button>
             </div>
@@ -1615,7 +1459,7 @@
                 </div>
                 <div class="game-board snake-board" id="snakeBoard" role="grid" aria-label="贪吃蛇游戏板"></div>
                 <div class="game-message" id="snakeMessage"></div>
-                <div style="text-align: center; color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 10px;">
+                <div style="text-align: center; color: var(--text-dark-secondary); font-size: 0.85rem; margin-top: 10px;">
                     使用方向键或WASD控制蛇的移动
                 </div>
             </div>
@@ -1645,15 +1489,15 @@
                 </div>
                 <div class="game-board sokoban-board" id="sokobanBoard" role="grid" aria-label="推箱子游戏板"></div>
                 <div class="game-message" id="sokobanMessage"></div>
-                <div style="text-align: center; color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 10px;">
+                <div style="text-align: center; color: var(--text-dark-secondary); font-size: 0.85rem; margin-top: 10px;">
                     使用方向键移动，将所有箱子推到目标位置
                 </div>
             </div>
         </section>
 
         <!-- 提示信息 -->
-        <footer style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5); font-size: 0.9rem;" role="contentinfo">
-            💡 提示：这是一个静态版本，所有数据保存在本地浏览器中
+        <footer style="text-align: center; padding: 20px; color: var(--text-dark-secondary); font-size: 0.9rem;" role="contentinfo">
+            💡 Chronos - 高级时钟应用
         </footer>
     </div>
 
@@ -1667,16 +1511,15 @@
             },
             UPDATE_INTERVAL: 1000,
             DEBOUNCE_DELAY: 300,
-            // 游戏配置
             GAME_CONFIG: {
                 MEMORY: {
-                    icons: ['🎈', '🎨', '🎭', '🎪', '🎯', '🎲', '🎸', '🎺'],
+                    icons: ['♠', '♥', '♦', '♣', '★', '◆', '●', '■'],
                     boardSize: 4
                 },
                 SNAKE: {
                     boardSize: 15,
-                    initialSpeed: 150,
-                    speedIncrement: 10,
+                    initialSpeed: 120,
+                    speedIncrement: 8,
                     scorePerFood: 10,
                     speedUpThreshold: 50
                 },
@@ -1735,34 +1578,28 @@
 
         // ==================== 工具函数模块 ====================
         const Utils = {
-            // 格式化日期为 YYYY-MM-DD
             formatDate(date) {
                 return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
             },
 
-            // 生成唯一ID
             generateId() {
                 return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
             },
 
-            // 格式化货币
             formatCurrency(amount) {
                 return `¥${Number(amount).toFixed(2)}`;
             },
 
-            // 获取当前时间戳
             getCurrentTimestamp() {
                 return new Date().toISOString();
             },
 
-            // HTML转义（防止XSS）
             escapeHtml(text) {
                 const div = document.createElement('div');
                 div.textContent = text;
                 return div.innerHTML;
             },
 
-            // 防抖函数
             debounce(func, wait) {
                 let timeout;
                 return function executedFunction(...args) {
@@ -1775,7 +1612,6 @@
                 };
             },
 
-            // 节流函数
             throttle(func, limit) {
                 let inThrottle;
                 return function(...args) {
@@ -1785,23 +1621,11 @@
                         setTimeout(() => inThrottle = false, limit);
                     }
                 };
-            },
-
-            // 鼠标位置追踪（用于卡片光效）
-            trackMousePosition(element) {
-                element.addEventListener('mousemove', (e) => {
-                    const rect = element.getBoundingClientRect();
-                    const x = ((e.clientX - rect.left) / rect.width) * 100;
-                    const y = ((e.clientY - rect.top) / rect.height) * 100;
-                    element.style.setProperty('--mouse-x', `${x}%`);
-                    element.style.setProperty('--mouse-y', `${y}%`);
-                });
             }
         };
 
         // ==================== 数据管理模块 ====================
         const DataManager = {
-            // 获取数据（带缓存和错误处理）
             getData(key, defaultValue = {}) {
                 try {
                     const data = localStorage.getItem(key);
@@ -1812,7 +1636,6 @@
                 }
             },
 
-            // 设置数据（带错误处理）
             setData(key, data) {
                 try {
                     localStorage.setItem(key, JSON.stringify(data));
@@ -1826,18 +1649,15 @@
                 }
             },
 
-            // 添加数据项
             addItem(key, dateKey, item) {
                 const data = this.getData(key, {});
                 if (!data[dateKey]) data[dateKey] = [];
                 data[dateKey].push(item);
-                // 按时间戳排序（最新的在前）
                 data[dateKey].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
                 this.setData(key, data);
                 return data;
             },
 
-            // 删除数据项
             deleteItem(key, dateKey, itemId) {
                 const data = this.getData(key, {});
                 if (data[dateKey]) {
@@ -1848,23 +1668,19 @@
                 return data;
             },
 
-            // 获取指定日期的数据
             getItems(key, dateKey) {
                 const data = this.getData(key, {});
                 return data[dateKey] || [];
             },
 
-            // 获取统计信息
             getStats(selectedDate) {
                 const expenses = this.getData(CONFIG.STORAGE_KEYS.EXPENSES, {});
                 const dateKey = Utils.formatDate(selectedDate);
                 const year = selectedDate.getFullYear();
                 const month = selectedDate.getMonth();
 
-                // 本日消费
                 const todayExpense = expenses[dateKey]?.reduce((sum, e) => sum + e.amount, 0) || 0;
 
-                // 本月消费统计
                 let monthExpense = 0;
                 let expenseDays = 0;
                 
@@ -1876,13 +1692,11 @@
                     }
                 });
 
-                // 平均每日消费
                 const avgExpense = expenseDays > 0 ? monthExpense / expenseDays : 0;
 
                 return { todayExpense, monthExpense, avgExpense };
             },
 
-            // 清理旧数据（保留最近30天）
             cleanupOldData() {
                 const thirtyDaysAgo = new Date();
                 thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -2005,7 +1819,7 @@
                 if (!board) return;
 
                 if (this.cards.length === 0) {
-                    board.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">点击"开始游戏"开始挑战</div>';
+                    board.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-dark-secondary);">点击"开始游戏"开始挑战</div>';
                     return;
                 }
 
@@ -2021,7 +1835,7 @@
                         cardElement.classList.add('flipped');
                         cardElement.textContent = card.icon;
                     } else {
-                        cardElement.textContent = '?';
+                        cardElement.textContent = '';
                     }
 
                     if (card.isMatched) {
@@ -2060,7 +1874,7 @@
                     this.updateStats();
                     this.canFlip = false;
                     
-                    setTimeout(() => this.checkMatch(), 600);
+                    setTimeout(() => this.checkMatch(), 400);
                 }
             }
 
@@ -2098,7 +1912,7 @@
                         this.canFlip = true;
                         this.renderBoard();
                         this.showMessage('再试一次！', 'warning');
-                    }, 1000);
+                    }, 600);
                 }
             }
 
@@ -2634,7 +2448,7 @@
                 if (!board) return;
 
                 if (!this.isGameActive) {
-                    board.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">点击"开始游戏"开始挑战</div>';
+                    board.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-dark-secondary);">点击"开始游戏"开始挑战</div>';
                     return;
                 }
 
@@ -2759,40 +2573,35 @@
                 if (this.isInitialized) return;
 
                 try {
-                    // 1. 优先加载主题和时钟（核心功能）
+                    // 1. 立即加载核心功能
                     this.loadTheme();
                     this.startClock();
                     
-                    // 2. 延迟初始化事件监听器
+                    // 2. 延迟执行非核心任务
                     setTimeout(() => {
                         this.setupEventListeners();
-                    }, 100);
-                    
-                    // 3. 延迟渲染数据（避免阻塞初始渲染）
-                    setTimeout(() => {
                         this.renderCalendar();
                         this.renderData();
-                    }, 200);
+                    }, 50);
                     
-                    // 4. 延迟初始化游戏（用户可能不会立即使用）
+                    // 3. 延迟初始化游戏
                     setTimeout(() => {
                         this.lazyInitGames();
-                    }, 500);
+                    }, 300);
                     
-                    // 5. 延迟数据清理（不影响启动）
+                    // 4. 延迟数据清理
                     setTimeout(() => {
                         this.scheduleCleanup();
                     }, 1000);
                     
                     this.isInitialized = true;
-                    console.log('ClockApp initialized successfully');
+                    console.log('Chronos initialized successfully');
                 } catch (error) {
-                    console.error('Failed to initialize ClockApp:', error);
+                    console.error('Failed to initialize Chronos:', error);
                     this.showError('应用初始化失败，请刷新页面重试');
                 }
             }
 
-            // 延迟初始化游戏
             lazyInitGames() {
                 if (!this.memoryGame) this.memoryGame = new MemoryGame();
                 if (!this.snakeGame) this.snakeGame = new SnakeGame();
@@ -2834,23 +2643,15 @@
             }
 
             setupEventListeners() {
-                // 主题切换
                 document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
-
-                // 日历导航
                 document.getElementById('prevMonth').addEventListener('click', () => this.changeMonth(-1));
                 document.getElementById('nextMonth').addEventListener('click', () => this.changeMonth(1));
-
-                // 保存按钮
                 document.getElementById('saveNote').addEventListener('click', () => this.saveNote());
                 document.getElementById('saveExpense').addEventListener('click', () => this.saveExpense());
-
-                // 游戏切换按钮
                 document.getElementById('tabMemory').addEventListener('click', () => this.switchGame('memory'));
                 document.getElementById('tabSnake').addEventListener('click', () => this.switchGame('snake'));
                 document.getElementById('tabSokoban').addEventListener('click', () => this.switchGame('sokoban'));
 
-                // 键盘快捷键
                 document.getElementById('noteInput').addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' && e.ctrlKey) {
                         e.preventDefault();
@@ -2872,29 +2673,11 @@
                     }
                 });
 
-                // 窗口失焦时保存数据
-                window.addEventListener('beforeunload', () => {
-                    // 数据已实时保存
-                });
-
-                // 键盘导航支持
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape') {
                         document.activeElement?.blur();
                     }
                 });
-
-                // 鼠标位置追踪（用于卡片光效）- 延迟执行
-                setTimeout(() => {
-                    const items = document.querySelectorAll('.item');
-                    // 限制追踪数量，避免性能问题
-                    const maxItems = 20;
-                    items.forEach((item, index) => {
-                        if (index < maxItems) {
-                            Utils.trackMousePosition(item);
-                        }
-                    });
-                }, 500);
             }
 
             switchGame(gameType) {
@@ -2907,18 +2690,15 @@
                 const tabSnake = document.getElementById('tabSnake');
                 const tabSokoban = document.getElementById('tabSokoban');
 
-                // 重置所有按钮
                 [tabMemory, tabSnake, tabSokoban].forEach(btn => {
                     btn.classList.remove('btn-primary');
                     btn.classList.add('btn-secondary');
                 });
 
-                // 隐藏所有容器
                 [memoryContainer, snakeContainer, sokobanContainer].forEach(container => {
                     container.style.display = 'none';
                 });
 
-                // 显示选中的游戏
                 if (gameType === 'memory') {
                     memoryContainer.style.display = 'flex';
                     tabMemory.classList.add('btn-primary');
@@ -3006,13 +2786,11 @@
 
                 const fragment = document.createDocumentFragment();
 
-                // 上月日期
                 for (let i = startDay - 1; i >= 0; i--) {
                     const day = this.createDayElement(prevLastDay - i, true);
                     fragment.appendChild(day);
                 }
 
-                // 当月日期
                 const today = new Date();
                 for (let i = 1; i <= lastDay.getDate(); i++) {
                     const dateKey = Utils.formatDate(new Date(year, month, i));
@@ -3025,7 +2803,6 @@
                     fragment.appendChild(day);
                 }
 
-                // 下月日期
                 const totalCells = 42;
                 const remainingCells = totalCells - (startDay + lastDay.getDate());
                 for (let i = 1; i <= remainingCells; i++) {
@@ -3115,7 +2892,6 @@
                     <div class="item-content">${Utils.escapeHtml(note.text)}</div>
                 `;
 
-                Utils.trackMousePosition(div);
                 return div;
             }
 
@@ -3155,7 +2931,6 @@
                     </div>
                 `;
 
-                Utils.trackMousePosition(div);
                 return div;
             }
 
@@ -3287,7 +3062,7 @@
 
             showSuccess(message) {
                 if ('Notification' in window && Notification.permission === 'granted') {
-                    new Notification('时钟应用', { body: message, icon: '⏰' });
+                    new Notification('Chronos', { body: message, icon: '⏱️' });
                 } else {
                     console.log(`✅ ${message}`);
                 }
@@ -3304,7 +3079,7 @@
             destroy() {
                 this.stopClock();
                 this.isInitialized = false;
-                console.log('ClockApp destroyed');
+                console.log('Chronos destroyed');
             }
         }
 
